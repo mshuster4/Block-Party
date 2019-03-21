@@ -2,6 +2,10 @@ body, html {
   height: 100%;
   background-color: black;
   overflow: auto;
+  font-family: omnes-pro, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+
 }
 
 #home {
@@ -21,6 +25,7 @@ h1 {
 
 .welcome-container {
   background-color: white; 
+  color: black;
   border-radius: 8px;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -31,8 +36,9 @@ h1 {
 button {
   width: 100%;
   border-radius: 8px;
-  background-color: white;
+  background-color: black;
   border-color: black;
+  color: white;
   padding: 15px; 
   margin-top: 5px;
 }
