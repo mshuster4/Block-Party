@@ -1,3 +1,35 @@
-.list-group-item {
-  line-height: 2.5;
+body, html {
+  width: 100%;
+  height: auto; 
+  background-color: black;
+  overflow: auto;
+  font-family: omnes-pro, sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
+
+img {
+  padding-top: 5px;
+  padding-bottom: 5px; 
+}
+
+.welcome-container {
+  background-color: white; 
+  color: black;
+  border-radius: 8px;
+  margin-top: 30px; 
+  padding-left: 30px;
+  padding-right: 30px; 
+  padding-bottom: 30px;
+}
+
+button {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #008e97;
+  border-color: #008e97;
+  color: white;
+  padding: 15px; 
+  margin-top: 5px;
+}
+
