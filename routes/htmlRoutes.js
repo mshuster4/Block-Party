@@ -1,9 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 var db = require("../models");
 
 module.exports = function(app) {
+  /*
   // Load index page
   app.get("/", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
+    db.Post.findAll({}).then(function(dbExamples) {
       res.render("index", {
         msg: "Welcome!",
         examples: dbExamples
@@ -20,6 +22,11 @@ module.exports = function(app) {
         example: dbExample
       });
     });
+  });
+*/
+
+  app.get("/", function(req, res) {
+    res.render("index");
   });
 
   app.get("/angels", function(req, res) {

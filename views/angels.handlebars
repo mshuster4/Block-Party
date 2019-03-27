@@ -8,6 +8,12 @@
      </div>
    </div>
 
+  <div class="row">
+    <div class="col-sm-12">
+      <button>Make a Post</button>
+    </div>
+  </div>
+
   <form>
 
     <div class="form-group">
@@ -32,7 +38,12 @@
       <button type="submit">Submit</button>
 
       <div class="row">
-        <div id="angelPosts" class="col-sm-12"></div>
+        <div id="angelPosts" class="col-sm-12">
+          <ul>
+            {{#each Angels}}
+            {{/each}}
+          </ul>
+        </div>
       </div>
 
     </div>
