@@ -57,4 +57,15 @@ label {
   color: black; 
 }
 
+@media (max-width: 990px) {
+  .container.nav-container {
+    justify-content: center;
+    text-align: center
+  }
+
+  a.navbar-brand {
+    margin-right: 0px;
+  }
+  
+}
 
