@@ -1,7 +1,15 @@
-*:focus,
-*:active {
-   outline:0px !important;
-   -webkit-appearance:none;
+a:focus, 
+a:active,
+button:focus,
+button:active {
+  outline: none;
+  box-shadow:none !important;
+}
+
+input[type="text"], .custom-select, textarea {
+  outline: none;
+  box-shadow:none !important;
+  border:1px solid #ccc !important;
 }
 
 body, html {
@@ -46,12 +54,6 @@ button {
   padding: 10px; 
   margin-top: 20px; 
 }
-
-.center {
-  top: 10%; 
-  overflow: auto; 
-}
-
 
 label {
   color: black; 
