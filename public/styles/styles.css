@@ -1,5 +1,7 @@
-*:focus {
-  outline: 0 !important;
+*:focus,
+*:active {
+   outline:0px !important;
+   -webkit-appearance:none;
 }
 
 body, html {
@@ -11,6 +13,14 @@ body, html {
   font-family: omnes-pro, sans-serif;
   font-weight: 300;
   font-style: normal;
+}
+
+.bg-color{
+  background-color: #008e97
+}
+
+a.navbar-brand.page-title {
+  margin-right: 1rem;
 }
 
 img {
@@ -32,17 +42,19 @@ button {
   width: 100%;
   border-radius: 8px;
   background-color: #008e97;
-  border-color: #008e97;
   color: white;
-  padding: 15px; 
-  margin-top: 5px;
+  padding: 10px; 
+  margin-top: 20px; 
 }
 
 .center {
-  top:10%; 
+  top: 10%; 
+  overflow: auto; 
 }
 
 
 label {
   color: black; 
 }
+
+

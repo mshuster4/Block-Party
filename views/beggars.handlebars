@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-  <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-color static-top">
+  <div class="container nav-container">
     <a class="navbar-brand" href="/beggars">Choosing Beggars</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -15,8 +15,8 @@
       </ul>
 
       <ul class="navbar-nav ml-auto">
-        <li>
-          <button type="button" id="make-post-button" data-toggle="modal" data-target="#beggars-modal">Make a Post</button>
+        <li class="nav-item">
+          <a class="navbar-brand mr-0" href="#" data-toggle="modal" data-target="#beggars-modal">Make a Post</a>
         </li>
       </ul>
 
@@ -33,7 +33,7 @@
 
           <div class="md-form mb-3">
             <label for="title">Post Title:</label>
-            <input type="text" class="form-control" id="title">
+            <input type="text" class="form-control" id="title" autocomplete="off">
           </div>
 
           <div class="md-form mb-3">
