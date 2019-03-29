@@ -32,13 +32,13 @@
         <div class="modal-body mx-3">
 
           <div class="md-form mb-3">
-            <label for="title">Post Title:</label>
-            <input type="text" class="form-control" id="title" autocomplete="off">
+            <label for="nosey-title">Post Title:</label>
+            <input type="text" class="form-control" id="nosey-title" autocomplete="off">
           </div>
 
           <div class="md-form-group mb-3">
-            <label id="categoryAngel" for="category">Post Category:</label>
-            <select class="custom-select" class="form-control category">
+            <label for="nosey-category">Post Category:</label>
+            <select class="custom-select" id="nosey-category" class="form-control category">
               <option selected="selected" value="">Select a Category</option>
               <option value="Goods">Rants</option>
               <option value="Services">Raves</option>
@@ -47,11 +47,11 @@
           </div>
 
           <div class="md-form-mb-3">
-            <label for="body">Post Details:</label>
-            <textarea class="form-control" rows="10" id="body"></textarea>
+            <label for="nosey-body">Post Details:</label>
+            <textarea class="form-control" rows="10" id="nosey-body"></textarea>
           </div>
 
-            <button class="submit-button">Submit</button>
+          <button type="submit" id="nosey-submit-button">Submit</button>
 
         </div>
       </div>    
@@ -59,9 +59,9 @@
   </div>
 
   <div class="row">
-    <div id="noseyPosts" class="col-sm-12">
+    <div id="nosey-posts-list" class="col-sm-12">
       <ul>
-      {{#each Nosey}}
+      {{#each blockParty}}
       {{/each}}
       </ul>
     </div>

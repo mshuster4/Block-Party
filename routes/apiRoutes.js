@@ -9,18 +9,22 @@ module.exports = function(app) {
   });
 
   // Create a new example
-  app.post("/api/blockParty/:id", function(req, res) {
-    db.blockParty.create(req.body).then(function(dbExample) {
+  app.post("/api/blockParty", function(req, res) {
+    db.Blockparty.create({
+      title: req.body.title,
+      category: req.body.category,
+      body: req.body.body
+    }).then(function(dbExample) {
       res.json(dbExample);
     });
   });
 
   // Delete an example by id
   app.delete("/api/blockParty/:id", function(req, res) {
-    db.blockParty
-      .destroy({ where: { id: req.params.id } })
-      .then(function(dbExample) {
-        res.json(dbExample);
-      });
+    db.Blockparty.destroy({ where: { id: req.params.id } }).then(function(
+      dbExample
+    ) {
+      res.json(dbExample);
+    });
   });
 };

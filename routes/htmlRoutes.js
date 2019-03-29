@@ -12,14 +12,8 @@ module.exports = function(app) {
   });
 
   // Load example page and pass in an example by id
-  app.get("/index/:id", function(req, res) {
-    db.blockParty
-      .findOne({ where: { id: req.params.id } })
-      .then(function(blockParty) {
-        res.render("index", {
-          example: blockParty
-        });
-      });
+  app.get("/angels", function(req, res) {
+    res.render("angels", {});
   });
 
   // app.get("/angels", function(req, res) {
