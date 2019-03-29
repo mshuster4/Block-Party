@@ -16,7 +16,7 @@ module.exports = function(app) {
   });
 
   // Delete an example by id
-  app.delete("/app/blockParty/:id", function(req, res) {
+  app.delete("/api/blockParty/:id", function(req, res) {
     db.blockParty
       .destroy({ where: { id: req.params.id } })
       .then(function(dbExample) {
