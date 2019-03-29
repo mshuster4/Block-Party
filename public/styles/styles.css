@@ -1,5 +1,15 @@
-*:focus {
-  outline: 0 !important;
+a:focus, 
+a:active,
+button:focus,
+button:active {
+  outline: none;
+  box-shadow:none !important;
+}
+
+input[type="text"], .custom-select, textarea {
+  outline: none;
+  box-shadow:none !important;
+  border:1px solid #ccc !important;
 }
 
 body, html {
@@ -11,6 +21,14 @@ body, html {
   font-family: omnes-pro, sans-serif;
   font-weight: 300;
   font-style: normal;
+}
+
+.bg-color{
+  background-color: #008e97;
+}
+
+a.navbar-brand.page-title {
+  margin-right: 1rem;
 }
 
 img {
@@ -32,17 +50,24 @@ button {
   width: 100%;
   border-radius: 8px;
   background-color: #008e97;
-  border-color: #008e97;
   color: white;
-  padding: 15px; 
-  margin-top: 5px;
+  padding: 10px; 
+  margin-top: 20px; 
 }
-
-.center {
-  top:10%; 
-}
-
 
 label {
   color: black; 
 }
+
+@media (max-width: 990px) {
+  .container.nav-container {
+    justify-content: center;
+    text-align: center
+  }
+
+  a.navbar-brand {
+    margin-right: 0px;
+  }
+  
+}
+
