@@ -2,46 +2,37 @@ var db = require("../models");
 
 module.exports = function(app) {
   // Load index page
-  // Default Code - Load index page
   app.get("/", function(req, res) {
-    res.render("index", {});
-  });
-
-  // app.get("/createpost", function(req, res) {
-  //   res.render("createpost", {});
-  // });
-
-  app.get("/", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
+    db.blockParty.findAll({}).then(function(blockParty) {
       res.render("index", {
         msg: "Welcome!",
-        examples: dbExamples
+        examples: blockParty
       });
     });
   });
 
   // Load example page and pass in an example by id
-  // app.get("/example/:id", function(req, res) {
-  //   db.Example.findOne({ where: { id: req.params.id } }).then(function(
-  //     dbExample
-  //   ) {
-  //     res.render("example", {
-  //       example: dbExample
-  //     });
-  //   });
+  app.get("/index/:id", function(req, res) {
+    db.blockParty
+      .findOne({ where: { id: req.params.id } })
+      .then(function(blockParty) {
+        res.render("index", {
+          example: blockParty
+        });
+      });
+  });
+
+  // app.get("/angels", function(req, res) {
+  //   res.render("angels");
   // });
 
-  app.get("/angels", function(req, res) {
-    res.render("angels", {});
-  });
+  // app.get("/beggars", function(req, res) {
+  //   res.render("beggars");
+  // });
 
-  app.get("/beggars", function(req, res) {
-    res.render("beggars", {});
-  });
-
-  app.get("/nosey", function(req, res) {
-    res.render("nosey", {});
-  });
+  // app.get("/nosey", function(req, res) {
+  //   res.render("nosey");
+  // });
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {

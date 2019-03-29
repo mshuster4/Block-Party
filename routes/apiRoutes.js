@@ -2,25 +2,25 @@ var db = require("../models");
 
 module.exports = function(app) {
   // Get all examples
-  app.get("/api/examples", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
+  app.get("/api/blockParty", function(req, res) {
+    db.blockParty.findAll({}).then(function(dbExamples) {
       res.json(dbExamples);
     });
   });
 
   // Create a new example
-  app.post("/api/examples", function(req, res) {
-    db.Example.create(req.body).then(function(dbExample) {
+  app.post("/api/blockParty/:id", function(req, res) {
+    db.blockParty.create(req.body).then(function(dbExample) {
       res.json(dbExample);
     });
   });
 
   // Delete an example by id
-  app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(
-      dbExample
-    ) {
-      res.json(dbExample);
-    });
+  app.delete("/app/blockParty/:id", function(req, res) {
+    db.blockParty
+      .destroy({ where: { id: req.params.id } })
+      .then(function(dbExample) {
+        res.json(dbExample);
+      });
   });
 };
