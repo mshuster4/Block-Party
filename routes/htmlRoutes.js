@@ -20,7 +20,7 @@ module.exports = function(app) {
       });
     });
   });
-// Load example page and pass in an example by id
+
   app.get("/angels", function(req, res) {
     res.render("angels", {});
   });

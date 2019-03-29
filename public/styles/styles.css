@@ -23,6 +23,14 @@ body, html {
   font-style: normal;
 }
 
+h1 {
+  color: white;
+}
+
+p{
+  color: white;
+}
+
 .bg-color{
   background-color: #008e97;
 }

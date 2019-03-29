@@ -9,6 +9,7 @@ $(document).ready(function() {
   $noseyPostBody = $("#nosey-body");
   $noseyPostCategory = $("#nosey-category");
   $noseyPostList = $("#nosey-posts-list");
+  refreshPosts();
 });
 
 // The API object contains methods for each kind of request we'll make
@@ -40,25 +41,33 @@ var API = {
 // refreshExamples gets new examples from the db and repopulates the list
 var refreshPosts = function() {
   API.getPost().then(function(data) {
+    console.log(data);
     var $refresh = data.map(function(Post) {
-      var $a = $("<a>")
-        .text(Post.text)
-        .attr("href", "/example/" + Post.id);
-
-      var $li = $("<li>")
+      var $div = $("<div>");
+      var $h1 = $("<h1>");
+      var $p = $("<p>");
+      var $h2 = $("<h2>");
+      /*
         .attr({
           class: "list-group-item",
           "data-id": Post.id
         })
-        .append($a);
-
+      */
+      $h1.text("title: " + Post.title);
+      $h2.text("category: " + Post.category);
+      $p.text("body: " + Post.body);
+      /*
       var $button = $("<button>")
         .addClass("btn btn-danger float-right delete")
         .text("ｘ");
-
       $li.append($button);
+      */
+      $h1.append($h2);
+      $h2.append($p);
+      $div.append($h1);
 
-      return $li;
+
+      return $div;
     });
 
     $noseyPostList.empty();
