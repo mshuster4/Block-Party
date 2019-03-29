@@ -1,46 +1,54 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $exampleList = $("#example-list");
+var $noseyPostTitle;
+var $noseyPostBody;
+var $noseyPostCategory;
+var $noseyPostList;
+
+$(document).ready(function() {
+  // Get references to page elements
+  $noseyPostTitle = $("#nosey-title");
+  $noseyPostBody = $("#nosey-body");
+  $noseyPostCategory = $("#nosey-category");
+  $noseyPostList = $("#nosey-posts-list");
+});
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+  savePost: function(post) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/blockParty",
+      data: JSON.stringify(post)
     });
   },
-  getExamples: function() {
+  getPost: function() {
     return $.ajax({
-      url: "api/examples",
+      url: "/api/blockParty",
       type: "GET"
     });
   },
-  deleteExample: function(id) {
+  deletePost: function(id) {
     return $.ajax({
-      url: "api/examples/" + id,
+      url: "api/blockParty" + id,
       type: "DELETE"
     });
   }
 };
 
 // refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+var refreshPosts = function() {
+  API.getPost().then(function(data) {
+    var $refresh = data.map(function(Post) {
       var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+        .text(Post.text)
+        .attr("href", "/example/" + Post.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": example.id
+          "data-id": Post.id
         })
         .append($a);
 
@@ -53,8 +61,8 @@ var refreshExamples = function() {
       return $li;
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
+    $noseyPostList.empty();
+    $noseyPostList.append($refresh);
   });
 };
 
@@ -63,22 +71,29 @@ var refreshExamples = function() {
 var handleFormSubmit = function(event) {
   event.preventDefault();
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
+  var val = $noseyPostTitle.val();
+  var noseyPost = {
+    title: val.trim(),
+    category: $noseyPostCategory.val(),
+    body: $noseyPostBody.val().trim()
   };
 
-  if (!(example.text && example.description)) {
+  console.log(noseyPost);
+
+  /*
+  if (!(noseyPost.text && noseyPost.description)) {
     alert("You must enter an example text and description!");
     return;
   }
+  */
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.savePost(noseyPost).then(function() {
+    refreshPosts();
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  $noseyPostTitle.val("");
+  $noseyPostCategory.val("");
+  $noseyPostBody.val("");
 };
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
@@ -99,7 +114,14 @@ $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 */
 
-$(document).on("click", ".submit-button", function(event) {
+$(document).on("click", "#angels-submit-button", function(event) {
   event.preventDefault();
   console.log("clicked");
 });
+
+$(document).on("click", "#beggars-submit-button", function(event) {
+  event.preventDefault();
+  console.log("clicked");
+});
+
+$(document).on("click", "#nosey-submit-button", handleFormSubmit);

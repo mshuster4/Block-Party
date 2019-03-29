@@ -2,7 +2,6 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  /*
   // Load index page
   // Default Code - Load index page
   app.get("/", function(req, res) {
@@ -21,10 +20,7 @@ module.exports = function(app) {
       });
     });
   });
-
-  // Load example page and pass in an example by id
-
-
+// Load example page and pass in an example by id
   app.get("/angels", function(req, res) {
     res.render("angels", {});
   });
