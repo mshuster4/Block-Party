@@ -15,8 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     category: {
-      type: DataTypes.STRING,
-      defaultValue: "Karma Angel"
+      type: DataTypes.STRING
     }
   });
   return Post;

@@ -23,12 +23,17 @@ body, html {
   font-style: normal;
 }
 
+body.modal-open {
+  overflow: inherit;
+  padding-right: 0 !important;
+}
+
 h1 {
-  color: white;
+  color: black;
 }
 
 p{
-  color: white;
+  color: black;
 }
 
 .bg-color{

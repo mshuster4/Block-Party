@@ -9,7 +9,12 @@ $(document).ready(function() {
   $noseyPostBody = $("#nosey-body");
   $noseyPostCategory = $("#nosey-category");
   $noseyPostList = $("#nosey-posts-list");
-  refreshPosts();
+
+  refreshNoseyPosts();
+
+  $(document).on("click", "#nosey-submit-button", handleNoseyPostSubmit);
+
+  $noseyPostList.on("click", ".delete", handleNoseyDeleteBtnClick);
 });
 
 // The API object contains methods for each kind of request we'll make
@@ -20,7 +25,7 @@ var API = {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/blockParty",
+      url: "/api/blockParty",
       data: JSON.stringify(post)
     });
   },
@@ -32,42 +37,52 @@ var API = {
   },
   deletePost: function(id) {
     return $.ajax({
-      url: "api/blockParty" + id,
+      url: "/api/blockParty/" + id,
       type: "DELETE"
     });
   }
 };
 
 // refreshExamples gets new examples from the db and repopulates the list
-var refreshPosts = function() {
+var refreshNoseyPosts = function() {
   API.getPost().then(function(data) {
     console.log(data);
     var $refresh = data.map(function(Post) {
-      var $div = $("<div>");
-      var $h1 = $("<h1>");
-      var $p = $("<p>");
-      var $h2 = $("<h2>");
-      /*
-        .attr({
-          class: "list-group-item",
-          "data-id": Post.id
-        })
-      */
-      $h1.text("title: " + Post.title);
-      $h2.text("category: " + Post.category);
-      $p.text("body: " + Post.body);
-      /*
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
-      $li.append($button);
-      */
-      $h1.append($h2);
-      $h2.append($p);
-      $div.append($h1);
+      var $postDiv = $("<div>");
+      var $headerDiv = $("<div>");
+      var $bodyDiv = $("<div>");
+      var $footerDiv = $("<div>");
+      var $timeStamp = $("<p>");
+      var $postTitle = $("<h1>");
+      var $bodyText = $("<p>");
+      var $button = $("<button>");
 
+      $postDiv.addClass("card");
+      $headerDiv.addClass("card-header");
+      $bodyDiv.addClass("card-body");
+      $footerDiv.addClass("card-footer");
 
-      return $div;
+      $postTitle.text(Post.title);
+      $bodyText.text(Post.body);
+      $timeStamp.text(Post.createdAt);
+      $button.attr("data-id", Post.id);
+      $button.addClass("btn btn-danger float-right delete");
+      $button.text("ｘ");
+      $footerDiv.append($button);
+
+      $headerDiv.append($postTitle);
+      $bodyDiv.after($headerDiv);
+      $bodyDiv.append($bodyText);
+      $footerDiv.after($bodyDiv);
+      $button.after($timeStamp);
+      $footerDiv.append($timeStamp);
+      $footerDiv.append($button);
+
+      $postDiv.append($headerDiv);
+      $postDiv.append($bodyDiv);
+      $postDiv.append($footerDiv);
+
+      return $postDiv;
     });
 
     $noseyPostList.empty();
@@ -77,27 +92,22 @@ var refreshPosts = function() {
 
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+var handleNoseyPostSubmit = function(event) {
   event.preventDefault();
 
-  var val = $noseyPostTitle.val();
   var noseyPost = {
-    title: val.trim(),
+    title: $noseyPostTitle.val().trim(),
     category: $noseyPostCategory.val(),
-    body: $noseyPostBody.val().trim()
+    body: $noseyPostBody.val().trim(),
   };
+
+  var $noseyModal = $("#nosey-modal");
 
   console.log(noseyPost);
 
-  /*
-  if (!(noseyPost.text && noseyPost.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-  */
-
   API.savePost(noseyPost).then(function() {
-    refreshPosts();
+    $noseyModal.modal("hide");
+    refreshNoseyPosts();
   });
 
   $noseyPostTitle.val("");
@@ -107,21 +117,15 @@ var handleFormSubmit = function(event) {
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+var handleNoseyDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete).then(function() {
+    refreshNoseyPosts();
   });
 };
 
 // Add event listeners to the submit and delete buttons
-/*
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
-*/
 
 $(document).on("click", "#angels-submit-button", function(event) {
   event.preventDefault();
@@ -132,5 +136,3 @@ $(document).on("click", "#beggars-submit-button", function(event) {
   event.preventDefault();
   console.log("clicked");
 });
-
-$(document).on("click", "#nosey-submit-button", handleFormSubmit);
