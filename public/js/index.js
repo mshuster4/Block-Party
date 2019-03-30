@@ -8,6 +8,15 @@ var $angelPostBody;
 var $angelPostCategory;
 var $angelPostList;
 
+var $beggarPostTitle;
+var $beggarPostBody;
+var $beggarPostCategory;
+var $beggarPostList;
+
+var angelURL;
+var noseyURL;
+var beggarURL;
+
 $(document).ready(function() {
   // Get references to page elements
   $noseyPostTitle = $("#nosey-title");
@@ -20,44 +29,57 @@ $(document).ready(function() {
   $angelPostCategory = $("#angel-category");
   $angelPostList = $("#angel-posts-list");
 
-  refreshPosts($angelPostList);
-  refreshPosts($noseyPostList);
+  $beggarPostTitle = $("#beggar-title");
+  $beggarPostBody = $("#beggar-body");
+  $beggarPostCategory = $("#beggar-category");
+  $beggarPostList = $("#beggar-posts-list");
+
+  angelURL = "/api/angelPost/";
+  noseyURL = "/api/noseyPost/";
+  beggarURL = "/api/beggarPost/";
+
+  refreshPosts($angelPostList, angelURL);
+  refreshPosts($noseyPostList, noseyURL);
+  refreshPosts($beggarPostList, beggarURL);
 
   $(document).on("click", "#angel-submit-button", handleAngelPostSubmit);
   $(document).on("click", "#nosey-submit-button", handleNoseyPostSubmit);
+  $(document).on("click", "#beggar-submit-button", handelBeggarPostSubmit);
 
+  $angelPostList.on("click", ".delete", handleAngelDeleteBtnClick);
   $noseyPostList.on("click", ".delete", handleNoseyDeleteBtnClick);
+  $beggarPostList.on("click", ".delete", handleBeggarDeleteBtnClick);
 });
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  savePost: function(post) {
+  savePost: function(post, url) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "/api/blockParty",
+      url: url,
       data: JSON.stringify(post)
     });
   },
-  getPost: function() {
+  getPost: function(url) {
     return $.ajax({
-      url: "/api/blockParty",
+      url: url,
       type: "GET"
     });
   },
-  deletePost: function(id) {
+  deletePost: function(id, url) {
     return $.ajax({
-      url: "/api/blockParty/" + id,
+      url: url + id,
       type: "DELETE"
     });
   }
 };
 
 // refreshExamples gets new examples from the db and repopulates the list
-var refreshPosts = function(div) {
-  API.getPost().then(function(data) {
+var refreshPosts = function(div, url) {
+  API.getPost(url).then(function(data) {
     console.log(data);
     var $refresh = data.map(function(Post) {
       var $postDiv = $("<div>");
@@ -82,11 +104,15 @@ var refreshPosts = function(div) {
       $timeStamp.addClass("nav-link nav-link:hover");
 
       $postTitle.text(Post.title);
+
       $bodyText.text(Post.body);
+
       $timeStamp.attr("href", "#");
       $timeStamp.text("Created At: " + Post.createdAt);
+
       $postCategory.attr("href", "#");
       $postCategory.text("Category: " + Post.category);
+
       $button.attr("data-id", Post.id);
       $button.text("Delete");
 
@@ -124,9 +150,9 @@ var handleAngelPostSubmit = function(event) {
 
   console.log(angelPost);
 
-  API.savePost(angelPost).then(function(){
+  API.savePost(angelPost, angelURL).then(function() {
     $angelModal.modal("hide");
-    refreshPosts($angelPostList);
+    refreshPosts($angelPostList, angelURL);
   });
 
   $angelPostTitle.val("");
@@ -147,9 +173,9 @@ var handleNoseyPostSubmit = function(event) {
 
   console.log(noseyPost);
 
-  API.savePost(noseyPost).then(function() {
+  API.savePost(noseyPost, noseyURL).then(function() {
     $noseyModal.modal("hide");
-    refreshPosts($noseyPostList);
+    refreshPosts($noseyPostList, noseyURL);
   });
 
   $noseyPostTitle.val("");
@@ -157,10 +183,49 @@ var handleNoseyPostSubmit = function(event) {
   $noseyPostBody.val("");
 };
 
+var handelBeggarPostSubmit = function(event) {
+  event.preventDefault();
+
+  var $beggarModal = $("#beggar-modal");
+
+  var $beggarPost = {
+    title: $beggarPostTitle.val().trim(),
+    category: $beggarPostCategory.val(),
+    body: $beggarPostBody.val().trim()
+  };
+
+  console.log($beggarPost);
+
+  API.savePost($beggarPost, beggarURL).then(function() {
+    $beggarModal.modal("hide");
+    refreshPosts($beggarPostList, beggarURL);
+  });
+
+  $beggarPostTitle.val("");
+  $beggarPostCategory.val("");
+  $beggarPostBody.val("");
+};
+
+var handleAngelDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete, angelURL).then(function() {
+    refreshPosts($angelPostList, angelURL);
+  });
+};
+
 var handleNoseyDeleteBtnClick = function() {
   var idToDelete = $(this).attr("data-id");
   console.log(idToDelete);
-  API.deletePost(idToDelete).then(function() {
-    refreshPosts($noseyPostList);
+  API.deletePost(idToDelete, noseyURL).then(function() {
+    refreshPosts($noseyPostList, noseyURL);
+  });
+};
+
+var handleBeggarDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete, beggarURL).then(function() {
+    refreshPosts($beggarPostList, noseyURL);
   });
 };
