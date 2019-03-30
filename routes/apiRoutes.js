@@ -13,7 +13,7 @@ module.exports = function(app) {
     db.Blockparty.create({
       title: req.body.title,
       category: req.body.category,
-      body: req.body.body,
+      body: req.body.body
     }).then(function(dbExample) {
       res.json(dbExample);
     });

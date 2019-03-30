@@ -2,24 +2,9 @@
 var db = require("../models");
 
 module.exports = function(app) {
-  // Load index page
-  // Default Code - Load index page
-  app.get("/", function(req, res) {
-    res.render("index", {});
-  });
-
-  // app.get("/createpost", function(req, res) {
-  //   res.render("createpost", {});
-  // });
 
   app.get("/", function(req, res) {
-    db.Post.findAll({}).then(function(dbExamples) {
-      res.render("index", {
-        msg: "Welcome!",
-        examples: dbExamples
-      });
-    });
-  });
+      res.render("index", {});
 
   app.get("/angels", function(req, res) {
     res.render("angels", {});

@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  var Post = sequelize.define("Blockparty", {
+  var Post = sequelize.define("blockParty", {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
