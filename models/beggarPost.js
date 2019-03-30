@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  var Post = sequelize.define("Blockparty", {
+  var beggarPost = sequelize.define("beggarPost", {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,9 +15,8 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     category: {
-      type: DataTypes.STRING,
-      defaultValue: "Karma Angel"
+      type: DataTypes.STRING
     }
   });
-  return Post;
+  return beggarPost;
 };
