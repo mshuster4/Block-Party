@@ -17,40 +17,6 @@ var angelURL;
 var noseyURL;
 var beggarURL;
 
-$(document).ready(function() {
-  // Get references to page elements
-  $noseyPostTitle = $("#nosey-title");
-  $noseyPostBody = $("#nosey-body");
-  $noseyPostCategory = $("#nosey-category");
-  $noseyPostList = $("#nosey-posts-list");
-
-  $angelPostTitle = $("#angel-title");
-  $angelPostBody = $("#angel-body");
-  $angelPostCategory = $("#angel-category");
-  $angelPostList = $("#angel-posts-list");
-
-  $beggarPostTitle = $("#beggar-title");
-  $beggarPostBody = $("#beggar-body");
-  $beggarPostCategory = $("#beggar-category");
-  $beggarPostList = $("#beggar-posts-list");
-
-  angelURL = "/api/angelPost/";
-  noseyURL = "/api/noseyPost/";
-  beggarURL = "/api/beggarPost/";
-
-  refreshPosts($angelPostList, angelURL);
-  refreshPosts($noseyPostList, noseyURL);
-  refreshPosts($beggarPostList, beggarURL);
-
-  $(document).on("click", "#angel-submit-button", handleAngelPostSubmit);
-  $(document).on("click", "#nosey-submit-button", handleNoseyPostSubmit);
-  $(document).on("click", "#beggar-submit-button", handelBeggarPostSubmit);
-
-  $angelPostList.on("click", ".delete", handleAngelDeleteBtnClick);
-  $noseyPostList.on("click", ".delete", handleNoseyDeleteBtnClick);
-  $beggarPostList.on("click", ".delete", handleBeggarDeleteBtnClick);
-});
-
 // The API object contains methods for each kind of request we'll make
 var API = {
   savePost: function(post, url) {
@@ -108,7 +74,7 @@ var refreshPosts = function(div, url) {
       $bodyText.text(Post.body);
 
       $timeStamp.attr("href", "#");
-      $timeStamp.text("Created At: " + Post.createdAt);
+      $timeStamp.text("Date/Time: " + Post.createdAt);
 
       $postCategory.attr("href", "#");
       $postCategory.text("Category: " + Post.category);
@@ -226,6 +192,40 @@ var handleBeggarDeleteBtnClick = function() {
   var idToDelete = $(this).attr("data-id");
   console.log(idToDelete);
   API.deletePost(idToDelete, beggarURL).then(function() {
-    refreshPosts($beggarPostList, noseyURL);
+    refreshPosts($beggarPostList, beggarURL);
   });
 };
+
+$(document).ready(function() {
+  // Get references to page elements
+  $noseyPostTitle = $("#nosey-title");
+  $noseyPostBody = $("#nosey-body");
+  $noseyPostCategory = $("#nosey-category");
+  $noseyPostList = $("#nosey-posts-list");
+
+  $angelPostTitle = $("#angel-title");
+  $angelPostBody = $("#angel-body");
+  $angelPostCategory = $("#angel-category");
+  $angelPostList = $("#angel-posts-list");
+
+  $beggarPostTitle = $("#beggar-title");
+  $beggarPostBody = $("#beggar-body");
+  $beggarPostCategory = $("#beggar-category");
+  $beggarPostList = $("#beggar-posts-list");
+
+  angelURL = "/api/angelPost/";
+  noseyURL = "/api/noseyPost/";
+  beggarURL = "/api/beggarPost/";
+
+  refreshPosts($angelPostList, angelURL);
+  refreshPosts($noseyPostList, noseyURL);
+  refreshPosts($beggarPostList, beggarURL);
+
+  $(document).on("click", "#angel-submit-button", handleAngelPostSubmit);
+  $(document).on("click", "#nosey-submit-button", handleNoseyPostSubmit);
+  $(document).on("click", "#beggar-submit-button", handelBeggarPostSubmit);
+
+  $angelPostList.on("click", ".delete", handleAngelDeleteBtnClick);
+  $noseyPostList.on("click", ".delete", handleNoseyDeleteBtnClick);
+  $beggarPostList.on("click", ".delete", handleBeggarDeleteBtnClick);
+});
