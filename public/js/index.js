@@ -3,92 +3,145 @@ var $noseyPostBody;
 var $noseyPostCategory;
 var $noseyPostList;
 
-$(document).ready(function() {
-  // Get references to page elements
-  $noseyPostTitle = $("#nosey-title");
-  $noseyPostBody = $("#nosey-body");
-  $noseyPostCategory = $("#nosey-category");
-  $noseyPostList = $("#nosey-posts-list");
-});
+var $angelPostTitle;
+var $angelPostBody;
+var $angelPostCategory;
+var $angelPostList;
+
+var $beggarPostTitle;
+var $beggarPostBody;
+var $beggarPostCategory;
+var $beggarPostList;
+
+var angelURL;
+var noseyURL;
+var beggarURL;
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  savePost: function(post) {
+  savePost: function(post, url) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/blockParty",
+      url: url,
       data: JSON.stringify(post)
     });
   },
-  getPost: function() {
+  getPost: function(url) {
     return $.ajax({
-      url: "/api/blockParty",
+      url: url,
       type: "GET"
     });
   },
-  deletePost: function(id) {
+  deletePost: function(id, url) {
     return $.ajax({
-      url: "api/blockParty" + id,
+      url: url + id,
       type: "DELETE"
     });
   }
 };
 
 // refreshExamples gets new examples from the db and repopulates the list
-var refreshPosts = function() {
-  API.getPost().then(function(data) {
+var refreshPosts = function(div, url) {
+  API.getPost(url).then(function(data) {
+    console.log(data);
     var $refresh = data.map(function(Post) {
-      var $a = $("<a>")
-        .text(Post.text)
-        .attr("href", "/example/" + Post.id);
+      var $postDiv = $("<div>");
+      var $headerDiv = $("<div>");
+      var $bodyDiv = $("<div>");
+      var $footerDiv = $("<div>");
+      var $postTitle = $("<h1>");
+      var $postCategory = $("<a>");
+      var $timeStamp = $("<a>");
+      var $linksDiv = $("<nav>");
+      var $bodyText = $("<p>");
+      var $button = $("<button>");
 
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": Post.id
-        })
-        .append($a);
+      $postDiv.addClass("card");
+      $headerDiv.addClass("card-header");
+      $postTitle.addClass("float-left");
+      $bodyDiv.addClass("card-body");
+      $footerDiv.addClass("card-footer");
+      $linksDiv.addClass("card-link nav-flex-column float-right");
+      $button.addClass("btn delete");
+      $postCategory.addClass("nav-link nav-link:hover");
+      $timeStamp.addClass("nav-link nav-link:hover");
 
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+      $postTitle.text(Post.title);
 
-      $li.append($button);
+      $bodyText.text(Post.body);
 
-      return $li;
+      $timeStamp.attr("href", "#");
+      $timeStamp.text("Date/Time: " + Post.createdAt);
+
+      $postCategory.attr("href", "#");
+      $postCategory.text("Category: " + Post.category);
+
+      $button.attr("data-id", Post.id);
+      $button.text("Delete");
+
+      $bodyDiv.after($headerDiv);
+      $footerDiv.after($bodyDiv);
+
+      $bodyDiv.append($bodyText);
+      $linksDiv.append($postCategory);
+      $linksDiv.append($timeStamp);
+      $headerDiv.append($postTitle);
+      $headerDiv.append($linksDiv);
+      $footerDiv.append($button);
+      $postDiv.append($headerDiv);
+      $postDiv.append($bodyDiv);
+      $postDiv.append($footerDiv);
+
+      return $postDiv;
     });
 
-    $noseyPostList.empty();
-    $noseyPostList.append($refresh);
+    div.empty();
+    div.append($refresh);
   });
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+var handleAngelPostSubmit = function(event) {
   event.preventDefault();
 
-  var val = $noseyPostTitle.val();
+  var $angelModal = $("#angel-modal");
+
+  var angelPost = {
+    title: $angelPostTitle.val().trim(),
+    category: $angelPostCategory.val(),
+    body: $angelPostBody.val().trim()
+  };
+
+  console.log(angelPost);
+
+  API.savePost(angelPost, angelURL).then(function() {
+    $angelModal.modal("hide");
+    refreshPosts($angelPostList, angelURL);
+  });
+
+  $angelPostTitle.val("");
+  $angelPostCategory.val("");
+  $angelPostBody.val("");
+};
+
+var handleNoseyPostSubmit = function(event) {
+  event.preventDefault();
+
+  var $noseyModal = $("#nosey-modal");
+
   var noseyPost = {
-    title: val.trim(),
+    title: $noseyPostTitle.val().trim(),
     category: $noseyPostCategory.val(),
     body: $noseyPostBody.val().trim()
   };
 
   console.log(noseyPost);
 
-  /*
-  if (!(noseyPost.text && noseyPost.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-  */
-
-  API.savePost(noseyPost).then(function() {
-    refreshPosts();
+  API.savePost(noseyPost, noseyURL).then(function() {
+    $noseyModal.modal("hide");
+    refreshPosts($noseyPostList, noseyURL);
   });
 
   $noseyPostTitle.val("");
@@ -96,32 +149,83 @@ var handleFormSubmit = function(event) {
   $noseyPostBody.val("");
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
+var handelBeggarPostSubmit = function(event) {
+  event.preventDefault();
 
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
+  var $beggarModal = $("#beggar-modal");
+
+  var $beggarPost = {
+    title: $beggarPostTitle.val().trim(),
+    category: $beggarPostCategory.val(),
+    body: $beggarPostBody.val().trim()
+  };
+
+  console.log($beggarPost);
+
+  API.savePost($beggarPost, beggarURL).then(function() {
+    $beggarModal.modal("hide");
+    refreshPosts($beggarPostList, beggarURL);
+  });
+
+  $beggarPostTitle.val("");
+  $beggarPostCategory.val("");
+  $beggarPostBody.val("");
+};
+
+var handleAngelDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete, angelURL).then(function() {
+    refreshPosts($angelPostList, angelURL);
   });
 };
 
-// Add event listeners to the submit and delete buttons
-/*
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
-*/
+var handleNoseyDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete, noseyURL).then(function() {
+    refreshPosts($noseyPostList, noseyURL);
+  });
+};
 
-$(document).on("click", "#angels-submit-button", function(event) {
-  event.preventDefault();
-  console.log("clicked");
+var handleBeggarDeleteBtnClick = function() {
+  var idToDelete = $(this).attr("data-id");
+  console.log(idToDelete);
+  API.deletePost(idToDelete, beggarURL).then(function() {
+    refreshPosts($beggarPostList, beggarURL);
+  });
+};
+
+$(document).ready(function() {
+  // Get references to page elements
+  $noseyPostTitle = $("#nosey-title");
+  $noseyPostBody = $("#nosey-body");
+  $noseyPostCategory = $("#nosey-category");
+  $noseyPostList = $("#nosey-posts-list");
+
+  $angelPostTitle = $("#angel-title");
+  $angelPostBody = $("#angel-body");
+  $angelPostCategory = $("#angel-category");
+  $angelPostList = $("#angel-posts-list");
+
+  $beggarPostTitle = $("#beggar-title");
+  $beggarPostBody = $("#beggar-body");
+  $beggarPostCategory = $("#beggar-category");
+  $beggarPostList = $("#beggar-posts-list");
+
+  angelURL = "/api/angelPost/";
+  noseyURL = "/api/noseyPost/";
+  beggarURL = "/api/beggarPost/";
+
+  refreshPosts($angelPostList, angelURL);
+  refreshPosts($noseyPostList, noseyURL);
+  refreshPosts($beggarPostList, beggarURL);
+
+  $(document).on("click", "#angel-submit-button", handleAngelPostSubmit);
+  $(document).on("click", "#nosey-submit-button", handleNoseyPostSubmit);
+  $(document).on("click", "#beggar-submit-button", handelBeggarPostSubmit);
+
+  $angelPostList.on("click", ".delete", handleAngelDeleteBtnClick);
+  $noseyPostList.on("click", ".delete", handleNoseyDeleteBtnClick);
+  $beggarPostList.on("click", ".delete", handleBeggarDeleteBtnClick);
 });
-
-$(document).on("click", "#beggars-submit-button", function(event) {
-  event.preventDefault();
-  console.log("clicked");
-});
-
-$(document).on("click", "#nosey-submit-button", handleFormSubmit);
